@@ -7,6 +7,10 @@ import Grupo from './pages/Grupo.jsx'
 import Inicio from './pages/Inicio.jsx'
 import Login from './pages/Login.jsx'
 import MeusGrupos from './pages/MeusGrupos.jsx'
+import NovaPartida from './pages/NovaPartida.jsx'
+import Partida from './pages/Partida.jsx'
+import Resultado from './pages/Resultado.jsx'
+import Times from './pages/Times.jsx'
 
 export default function App() {
   return (
@@ -22,6 +26,10 @@ export default function App() {
           <Route path="/grupos" element={<MeusGrupos />} />
           <Route path="/grupos/novo" element={<CriarOuEntrar />} />
           <Route path="/grupos/:id" element={<Grupo />} />
+          <Route path="/grupos/:id/partidas/nova" element={<NovaPartida />} />
+          <Route path="/partidas/:id" element={<Partida />} />
+          <Route path="/partidas/:id/times" element={<Times />} />
+          <Route path="/partidas/:id/resultado" element={<Resultado />} />
         </Route>
       </Route>
 

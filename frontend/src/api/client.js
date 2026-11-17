@@ -100,3 +100,17 @@ export const gruposApi = {
   detalhe: (id) => api.get(`/grupos/${id}/`).then((r) => r.data),
   membros: (id) => api.get(`/grupos/${id}/membros/`).then((r) => r.data),
 }
+
+// --- Partidas, presenca, sorteio e resultado (Arthur) ---
+export const partidasApi = {
+  doGrupo: (grupoId) => api.get(`/grupos/${grupoId}/partidas/`).then((r) => r.data),
+  criar: (grupoId, dados) => api.post(`/grupos/${grupoId}/partidas/`, dados).then((r) => r.data),
+  detalhe: (id) => api.get(`/partidas/${id}/`).then((r) => r.data),
+  presenca: (id, vou) => api.post(`/partidas/${id}/presenca/`, { vou }).then((r) => r.data),
+  // a IA pode levar alguns segundos: timeout maior que o padrao
+  montarTimes: (id) => api.post(`/partidas/${id}/montar-times/`, null, { timeout: 90000 }).then((r) => r.data),
+  confirmarTimes: (id) => api.post(`/partidas/${id}/confirmar-times/`).then((r) => r.data),
+  trocar: (id, jogadorA, jogadorB) =>
+    api.post(`/partidas/${id}/trocar/`, { jogador_a: jogadorA, jogador_b: jogadorB }).then((r) => r.data),
+  lancarResultado: (id, gols) => api.put(`/partidas/${id}/resultado/`, { gols }).then((r) => r.data),
+}
