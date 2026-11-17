@@ -1,0 +1,22 @@
+@import 'tailwindcss';
+
+/* Tokens do Racha (mesmas cores do fluxo de telas) */
+@theme {
+  --font-sans: 'Inter', system-ui, 'Segoe UI', Arial, sans-serif;
+  --color-campo-50: #f0fdf4;
+  --color-campo-100: #dcfce7;
+  --color-campo-600: #16a34a;
+  --color-campo-700: #15803d;
+  --color-campo-800: #166534;
+  --color-tinta: #1f2937;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  @apply bg-gray-50 text-gray-900 antialiased;
+}
