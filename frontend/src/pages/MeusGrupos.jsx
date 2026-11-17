@@ -28,8 +28,8 @@ export default function MeusGrupos() {
 
       {grupos?.length === 0 && (
         <div className="rounded-2xl border-2 border-dashed border-gray-300 px-6 py-10 text-center">
-          <p className="font-semibold">Voce ainda nao esta em nenhum grupo</p>
-          <p className="mt-1 text-sm text-gray-500">Crie a pelada da sua turma ou entre com o codigo de convite.</p>
+          <p className="font-semibold">Você ainda não está em nenhum grupo</p>
+          <p className="mt-1 text-sm text-gray-500">Crie a pelada da sua turma ou entre com o código de convite.</p>
         </div>
       )}
 
@@ -43,7 +43,7 @@ export default function MeusGrupos() {
                   <p className="truncate font-bold">{g.nome}</p>
                   <p className="text-xs text-gray-500">
                     {g.total_membros} {g.total_membros === 1 ? 'jogador' : 'jogadores'}
-                    {g.meu_papel === 'organizador' && ' · voce organiza'}
+                    {g.meu_papel === 'organizador' && ' · você organiza'}
                   </p>
                 </div>
                 <span aria-hidden className="text-gray-400">›</span>
@@ -56,7 +56,7 @@ export default function MeusGrupos() {
       <div className="mt-8 flex flex-col gap-3">
         <Botao para="/grupos/novo">+ Criar grupo</Botao>
         <Botao para="/grupos/novo?aba=entrar" variante="secundario">
-          Entrar com codigo
+          Entrar com código
         </Botao>
       </div>
     </>

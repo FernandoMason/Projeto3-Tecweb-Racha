@@ -46,7 +46,7 @@ export default function CriarOuEntrar() {
         onChange={trocarAba}
         abas={[
           { valor: 'criar', rotulo: 'Criar' },
-          { valor: 'entrar', rotulo: 'Tenho codigo' },
+          { valor: 'entrar', rotulo: 'Tenho código' },
         ]}
       />
 
@@ -60,12 +60,12 @@ export default function CriarOuEntrar() {
             autoFocus
             value={nome}
             onChange={(e) => setNome(e.target.value)}
-            dica="Voce vira o organizador e recebe um codigo para convidar a galera."
+            dica="Você vira o organizador e recebe um código para convidar a galera."
           />
         ) : (
           <Campo
             key="codigo"
-            rotulo="Codigo de convite"
+            rotulo="Código de convite"
             placeholder="RACHA-7K2"
             autoCapitalize="characters"
             autoComplete="off"
@@ -73,7 +73,7 @@ export default function CriarOuEntrar() {
             autoFocus
             value={codigo}
             onChange={(e) => setCodigo(e.target.value.toUpperCase())}
-            dica="Peca o codigo para quem organiza a pelada."
+            dica="Peça o código para quem organiza a pelada."
           />
         )}
         <Aviso>{erro}</Aviso>

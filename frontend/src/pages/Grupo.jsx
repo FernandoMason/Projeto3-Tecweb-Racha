@@ -26,7 +26,7 @@ function CodigoConvite({ codigo }) {
       type="button"
       onClick={copiar}
       className="mt-2 inline-flex w-fit items-center gap-2 rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600 hover:bg-gray-200"
-      title="Copiar codigo"
+      title="Copiar código"
     >
       convite: <span className="font-mono font-bold text-tinta">{codigo}</span>
       <span aria-live="polite" className="text-campo-700">{copiado ? 'copiado!' : 'copiar'}</span>
@@ -98,7 +98,7 @@ function Grupo({ id }) {
       .detalhe(id)
       .then(setGrupo)
       .catch((e) =>
-        setErro(e.response?.status === 404 ? 'Grupo nao encontrado ou voce nao faz parte dele.' : mensagemDeErro(e)),
+        setErro(e.response?.status === 404 ? 'Grupo não encontrado ou você não faz parte dele.' : mensagemDeErro(e)),
       )
   }, [id])
 
@@ -122,7 +122,7 @@ function Grupo({ id }) {
       </Cabecalho>
 
       <Abas
-        rotulo="Secoes do grupo"
+        rotulo="Seções do grupo"
         ativa={aba}
         onChange={(valor) => setParams(valor === 'partidas' ? {} : { aba: valor }, { replace: true })}
         abas={[
@@ -134,11 +134,11 @@ function Grupo({ id }) {
 
       <section className="mt-6" role="tabpanel">
         {aba === 'partidas' && (
-          <EmBreve titulo="Nenhuma partida marcada" texto="As partidas e o sorteio de times com IA chegam na proxima entrega." />
+          <EmBreve titulo="Nenhuma partida marcada" texto="As partidas e o sorteio de times com IA chegam na próxima entrega." />
         )}
         {aba === 'membros' && <ListaMembros grupoId={grupo.id} />}
         {aba === 'ranking' && (
-          <EmBreve titulo="Ranking ainda vazio" texto="Artilharia, vitorias e craques aparecem depois das primeiras partidas." />
+          <EmBreve titulo="Ranking ainda vazio" texto="Artilharia, vitórias e craques aparecem depois das primeiras partidas." />
         )}
       </section>
     </>

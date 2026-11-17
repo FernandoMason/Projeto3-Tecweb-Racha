@@ -4,9 +4,10 @@ import { useAuth } from './AuthContext.jsx'
 
 /** So deixa passar quem esta logado; senao manda para o login e volta depois. */
 export function RotaProtegida() {
-  const { usuario, carregando } = useAuth()
+  const { usuario, carregando, saiu } = useAuth()
   const location = useLocation()
   if (carregando) return <Carregando tela />
+  if (!usuario && saiu) return <Navigate to="/" replace />
   if (!usuario) return <Navigate to="/login" replace state={{ de: location.pathname }} />
   return <Outlet />
 }

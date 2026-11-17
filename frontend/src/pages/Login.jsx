@@ -62,7 +62,7 @@ export default function Login() {
       </form>
 
       <p className="mt-8 text-center text-sm text-gray-500">
-        Nao tem conta?{' '}
+        Não tem conta?{' '}
         <Link to="/cadastro" className="font-bold text-tinta hover:underline">
           Criar conta
         </Link>

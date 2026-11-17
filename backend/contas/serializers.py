@@ -22,7 +22,7 @@ class CadastroSerializer(serializers.ModelSerializer):
     def validate_email(self, valor):
         valor = valor.lower()
         if Usuario.objects.filter(email=valor).exists():
-            raise serializers.ValidationError('Ja existe uma conta com esse e-mail.')
+            raise serializers.ValidationError('Já existe uma conta com esse e-mail.')
         return valor
 
     def validate(self, dados):

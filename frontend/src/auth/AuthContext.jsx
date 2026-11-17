@@ -7,9 +7,12 @@ export function AuthProvider({ children }) {
   const [usuario, setUsuario] = useState(null)
   // "carregando" enquanto confere se o token salvo ainda vale.
   const [carregando, setCarregando] = useState(() => Boolean(tokens.ler()?.access))
+  // true depois de clicar em "Sair": a rota protegida manda para o inicio, nao para o login
+  const [saiu, setSaiu] = useState(false)
 
   const sair = useCallback(() => {
     tokens.limpar()
+    setSaiu(true)
     setUsuario(null)
   }, [])
 
@@ -25,6 +28,7 @@ export function AuthProvider({ children }) {
 
   const guardarSessao = useCallback(({ access, refresh, usuario: u }) => {
     tokens.salvar({ access, refresh })
+    setSaiu(false)
     setUsuario(u)
     return u
   }, [])
@@ -40,8 +44,8 @@ export function AuthProvider({ children }) {
   )
 
   const valor = useMemo(
-    () => ({ usuario, carregando, entrar, cadastrar, sair }),
-    [usuario, carregando, entrar, cadastrar, sair],
+    () => ({ usuario, carregando, saiu, entrar, cadastrar, sair }),
+    [usuario, carregando, saiu, entrar, cadastrar, sair],
   )
 
   return <AuthContext.Provider value={valor}>{children}</AuthContext.Provider>

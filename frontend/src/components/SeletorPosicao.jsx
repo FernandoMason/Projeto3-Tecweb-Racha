@@ -1,7 +1,7 @@
 import { POSICOES } from './posicoes.js'
 
 /** Pilulas GOL / ZAG / MEI / ATA (radio group acessivel). */
-export default function SeletorPosicao({ valor, onChange, rotulo = 'Posicao preferida' }) {
+export default function SeletorPosicao({ valor, onChange, rotulo = 'Posição preferida' }) {
   return (
     <fieldset className="flex flex-col gap-1.5">
       <legend className="mb-1.5 text-xs font-medium text-gray-500">{rotulo}</legend>

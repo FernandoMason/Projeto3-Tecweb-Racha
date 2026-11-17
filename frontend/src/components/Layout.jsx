@@ -1,4 +1,4 @@
-import { Link, Outlet, useNavigate } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext.jsx'
 import Avatar from './Avatar.jsx'
 import Logo from './Logo.jsx'
@@ -6,11 +6,6 @@ import Logo from './Logo.jsx'
 /** Navbar fixa no topo + coluna central (pensado primeiro para celular). */
 export function Navbar() {
   const { usuario, sair } = useAuth()
-  const navigate = useNavigate()
-  function deslogar() {
-    navigate('/', { replace: true })
-    sair()
-  }
   return (
     <header className="sticky top-0 z-10 border-b border-gray-200 bg-white/90 backdrop-blur">
       <nav className="mx-auto flex h-14 max-w-xl items-center justify-between px-4">
@@ -21,7 +16,7 @@ export function Navbar() {
           <div className="flex items-center gap-3">
             <span className="hidden text-sm text-gray-600 sm:inline">{usuario.nome}</span>
             <Avatar nome={usuario.nome} tamanho="size-8" />
-            <button onClick={deslogar} className="rounded-full px-3 py-1.5 text-xs font-semibold text-gray-600 hover:bg-gray-100">
+            <button onClick={sair} className="rounded-full px-3 py-1.5 text-xs font-semibold text-gray-600 hover:bg-gray-100">
               Sair
             </button>
           </div>

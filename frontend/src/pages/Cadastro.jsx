@@ -63,7 +63,7 @@ export default function Cadastro() {
           value={form.senha}
           onChange={mudar('senha')}
           erro={erros.senha}
-          dica="Pelo menos 8 caracteres, nao so numeros."
+          dica="Pelo menos 8 caracteres, não só números."
         />
         <SeletorPosicao valor={form.posicao} onChange={(posicao) => setForm((f) => ({ ...f, posicao }))} />
         <Aviso>{erroGeral}</Aviso>
@@ -73,7 +73,7 @@ export default function Cadastro() {
       </form>
 
       <p className="mt-8 text-center text-sm text-gray-500">
-        Ja tem conta?{' '}
+        Já tem conta?{' '}
         <Link to="/login" className="font-bold text-tinta hover:underline">
           Entrar
         </Link>

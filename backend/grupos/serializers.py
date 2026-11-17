@@ -44,4 +44,4 @@ class EntrarGrupoSerializer(serializers.Serializer):
         try:
             return Grupo.objects.get(codigo_convite=valor)
         except Grupo.DoesNotExist:
-            raise serializers.ValidationError('Nenhum grupo com esse codigo.')
+            raise serializers.ValidationError('Nenhum grupo com esse código.')

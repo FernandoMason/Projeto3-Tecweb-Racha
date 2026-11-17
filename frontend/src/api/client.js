@@ -64,7 +64,7 @@ api.interceptors.response.use(
 /** Transforma o erro do DRF em uma mensagem curta para mostrar na tela. */
 export function mensagemDeErro(erro, padrao = 'Algo deu errado. Tente de novo.') {
   const dados = erro?.response?.data
-  if (!erro?.response) return 'Nao foi possivel falar com o servidor.'
+  if (!erro?.response) return 'Não foi possível falar com o servidor.'
   if (typeof dados === 'string') return padrao
   if (dados?.detail) {
     if (erro.response.status === 401 && dados.code !== 'token_not_valid') return 'E-mail ou senha incorretos.'
