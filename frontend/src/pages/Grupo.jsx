@@ -7,6 +7,7 @@ import Aviso from '../components/Aviso.jsx'
 import Carregando from '../components/Carregando.jsx'
 import { Cabecalho } from '../components/Layout.jsx'
 import ListaPartidas from '../components/ListaPartidas.jsx'
+import RankingGrupo from '../components/RankingGrupo.jsx'
 import { POSICOES } from '../components/posicoes.js'
 
 const NOME_POSICAO = Object.fromEntries(POSICOES.map((p) => [p.valor, p.nome]))
@@ -72,15 +73,6 @@ function ListaMembros({ grupoId }) {
   )
 }
 
-function EmBreve({ titulo, texto }) {
-  return (
-    <div className="rounded-2xl border-2 border-dashed border-gray-300 px-6 py-10 text-center">
-      <p className="font-semibold">{titulo}</p>
-      <p className="mt-1 text-sm text-gray-500">{texto}</p>
-    </div>
-  )
-}
-
 /** Tela 6 · Pagina do grupo (abas Partidas / Membros / Ranking) */
 export default function PaginaGrupo() {
   const { id } = useParams()
@@ -136,9 +128,7 @@ function Grupo({ id }) {
       <section className="mt-6" role="tabpanel">
         {aba === 'partidas' && <ListaPartidas grupo={grupo} />}
         {aba === 'membros' && <ListaMembros grupoId={grupo.id} />}
-        {aba === 'ranking' && (
-          <EmBreve titulo="Ranking ainda vazio" texto="Artilharia, vitórias e craques aparecem depois das primeiras partidas." />
-        )}
+        {aba === 'ranking' && <RankingGrupo grupoId={grupo.id} />}
       </section>
     </>
   )

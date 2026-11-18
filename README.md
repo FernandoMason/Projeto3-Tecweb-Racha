@@ -56,7 +56,7 @@ Apresentação e entrega final: **24/11/2026** (commits até 09:30).
 - [x] #40 Endpoint da crônica (Gabriel)
 - [x] #41 Tela pós-jogo (Gabriel)
 - [x] #42 API de ranking (Gabriel)
-- [ ] #43 Tela de ranking (Gabriel)
+- [x] #43 Tela de ranking (Gabriel)
 - [ ] #44 Narração do lance, diferencial (Gabriel)
 - [ ] #45 README final (Gabriel)
 - [ ] #46 Teste com usuários (Fernando, Arthur, Gabriel)
