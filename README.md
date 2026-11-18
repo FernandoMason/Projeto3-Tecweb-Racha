@@ -30,11 +30,11 @@ Apresentação e entrega final: **24/11/2026** (commits até 09:30).
 - [ ] #24 Tela de nova partida (Arthur)
 - [ ] #25 Tela da partida (Arthur)
 - [ ] #26 Dados de teste (seed) (Arthur)
-- [ ] #34 Configurar o Gemini (Gabriel)
+- [ x] #34 Configurar o Gemini (Gabriel)
 - [x] #35 Cliente do Gemini (Gabriel)
-- [ ] #36 Modelos Resultado e Gol (Gabriel)
-- [ ] #37 API de resultado (Gabriel)
-- [ ] #38 Tela de resultado (Gabriel)
+- [x ] #36 Modelos Resultado e Gol (Gabriel)
+- [x ] #37 API de resultado (Gabriel)
+- [x ] #38 Tela de resultado (Gabriel)
 
 ### Sprint 2 · 16/11 a 19/11
 
