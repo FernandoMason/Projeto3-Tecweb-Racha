@@ -5,6 +5,8 @@ Testes da cronica da rodada (#40). A IA e sempre simulada (mock de ia.gemini.ger
 import logging
 from unittest.mock import patch
 
+from django.utils import timezone
+
 from ia.gemini import IAIndisponivel, RespostaInvalida
 from partidas.equilibrio import Jogador, montar_por_algoritmo
 from partidas.sorteio import salvar_times
@@ -56,6 +58,9 @@ class DadosDaPartidaTests(CronicaBase):
         dados = dados_da_partida(Resultado.objects.get(partida=self.partida))
         self.assertEqual(dados['grupo'], 'Pelada')
         self.assertEqual(dados['local'], 'Arena Society')
+        # data com a hora local, para a cronica saber se foi de manha, tarde ou noite
+        self.assertRegex(dados['data'], r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$')
+        self.assertEqual(dados['data'], timezone.localtime(self.partida.data_hora).strftime('%Y-%m-%dT%H:%M'))
         self.assertEqual([(t['nome'], t['gols']) for t in dados['times']], [('Verde', 3), ('Preto', 2)])
         jogadores_verde = {j['id']: j for j in dados['times'][0]['jogadores']}
         self.assertEqual(len(jogadores_verde), self.verde.jogadores.count())

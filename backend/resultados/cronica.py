@@ -60,7 +60,7 @@ def dados_da_partida(resultado):
 
     return {
         'grupo': partida.grupo.nome,
-        'data': timezone.localtime(partida.data_hora).date().isoformat(),
+        'data': timezone.localtime(partida.data_hora).strftime('%Y-%m-%dT%H:%M'),  # com a hora (manha/tarde/noite)
         'local': partida.local,
         'times': times,
     }

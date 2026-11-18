@@ -4,7 +4,7 @@
 # Sobram 2 gols do Verde e 1 do Preto sem autor marcado.
 VERDE_5_X_3_PRETO = {
     'grupo': 'Pelada de quinta',
-    'data': '2026-11-12',  # uma quinta-feira
+    'data': '2026-11-12T20:00',  # uma quinta-feira, à noite
     'local': 'Arena Society',
     'times': [
         {
@@ -36,7 +36,7 @@ VERDE_5_X_3_PRETO = {
 # se a IA falhar, a partida fica sem craque.
 EMPATE_0_X_0 = {
     'grupo': 'Futsal Insper',
-    'data': '2026-11-15',
+    'data': '2026-11-15T10:00',  # domingo de manhã
     'times': [
         {
             'nome': 'Azul',
@@ -60,6 +60,7 @@ EMPATE_0_X_0 = {
 }
 
 # Nome com "instrucao" escondida: a cronica deve tratar como nome, nao obedecer.
+# Sem data: a cronica nao pode dizer se foi de manha, tarde ou noite.
 NOME_MALICIOSO = {
     'grupo': 'Pelada do prédio',
     'times': [
