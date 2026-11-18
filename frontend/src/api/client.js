@@ -114,3 +114,12 @@ export const partidasApi = {
     api.post(`/partidas/${id}/trocar/`, { jogador_a: jogadorA, jogador_b: jogadorB }).then((r) => r.data),
   lancarResultado: (id, gols) => api.put(`/partidas/${id}/resultado/`, { gols }).then((r) => r.data),
 }
+
+// --- Cronica, craque e ranking (Gabriel) ---
+export const resultadosApi = {
+  cronica: (partidaId) => api.get(`/partidas/${partidaId}/resultado/cronica/`).then((r) => r.data),
+  // a IA leva alguns segundos para escrever: timeout maior que o padrao, como no montarTimes
+  gerarCronica: (partidaId) =>
+    api.post(`/partidas/${partidaId}/resultado/cronica/`, null, { timeout: 90000 }).then((r) => r.data),
+  ranking: (grupoId) => api.get(`/grupos/${grupoId}/ranking/`).then((r) => r.data),
+}

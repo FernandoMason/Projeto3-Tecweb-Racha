@@ -9,6 +9,7 @@ import Login from './pages/Login.jsx'
 import MeusGrupos from './pages/MeusGrupos.jsx'
 import NovaPartida from './pages/NovaPartida.jsx'
 import Partida from './pages/Partida.jsx'
+import PosJogo from './pages/PosJogo.jsx'
 import Resultado from './pages/Resultado.jsx'
 import Times from './pages/Times.jsx'
 
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="/partidas/:id" element={<Partida />} />
           <Route path="/partidas/:id/times" element={<Times />} />
           <Route path="/partidas/:id/resultado" element={<Resultado />} />
+          <Route path="/partidas/:id/cronica" element={<PosJogo />} />
         </Route>
       </Route>
 

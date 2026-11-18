@@ -89,7 +89,7 @@ function Resultado({ id }) {
       })
     try {
       await partidasApi.lancarResultado(id, lista)
-      navigate(`/partidas/${id}`, { replace: true })
+      navigate(`/partidas/${id}/cronica`, { replace: true }) // a tela pos-jogo pede a cronica a IA
     } catch (e) {
       setErro(mensagemDeErro(e))
       setSalvando(false)
@@ -136,7 +136,7 @@ function Resultado({ id }) {
 
         <Aviso>{erro}</Aviso>
         <Botao onClick={salvar} carregando={salvando}>
-          Salvar resultado
+          Salvar e gerar crônica
         </Botao>
       </div>
     </>

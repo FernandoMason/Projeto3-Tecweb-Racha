@@ -54,7 +54,7 @@ Apresentação e entrega final: **24/11/2026** (commits até 09:30).
 - [ ] #33 Melhorar prompt pelo feedback (Arthur)
 - [x] #39 Prompt da crônica e do craque (Gabriel)
 - [x] #40 Endpoint da crônica (Gabriel)
-- [ ] #41 Tela pós-jogo (Gabriel)
+- [x] #41 Tela pós-jogo (Gabriel)
 - [x] #42 API de ranking (Gabriel)
 - [ ] #43 Tela de ranking (Gabriel)
 - [ ] #44 Narração do lance, diferencial (Gabriel)
