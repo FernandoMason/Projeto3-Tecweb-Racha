@@ -233,6 +233,9 @@ function TimesEPlacar({ partida }) {
               ))}
             </ul>
           )}
+          <Botao variante="campo" para={`/partidas/${partida.id}/cronica`}>
+            ✦ Ler a crônica da rodada
+          </Botao>
         </section>
       )}
 
