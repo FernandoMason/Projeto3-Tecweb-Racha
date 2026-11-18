@@ -55,7 +55,7 @@ Apresentação e entrega final: **24/11/2026** (commits até 09:30).
 - [x] #39 Prompt da crônica e do craque (Gabriel)
 - [x] #40 Endpoint da crônica (Gabriel)
 - [ ] #41 Tela pós-jogo (Gabriel)
-- [ ] #42 API de ranking (Gabriel)
+- [x] #42 API de ranking (Gabriel)
 - [ ] #43 Tela de ranking (Gabriel)
 - [ ] #44 Narração do lance, diferencial (Gabriel)
 - [ ] #45 README final (Gabriel)
@@ -134,6 +134,7 @@ O usuario customizado e `contas.Usuario` (`settings.AUTH_USER_MODEL`): use `sett
 | GET/PUT | `/api/partidas/{id}/resultado/` | placar; PUT `{gols: [{time, jogador\|null, quantidade}]}` (organizador) |
 | GET | `/api/partidas/{id}/resultado/cronica/` | cronica da rodada e craque (membros); `desatualizada: true` se o placar mudou depois |
 | POST | `/api/partidas/{id}/resultado/cronica/` | IA escreve (ou reescreve) a cronica e escolhe o craque (organizador). Se a IA falhar: `status: "erro"` e o artilheiro como craque |
+| GET | `/api/grupos/{id}/ranking/` | artilharia, vitorias e craques do grupo, com colocacao (membros) |
 
 Status da partida: `aberta` (presenca) → `rascunho` (organizador confere) → `publicada` → `encerrada` (com resultado).
 
