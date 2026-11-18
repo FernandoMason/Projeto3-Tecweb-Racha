@@ -53,7 +53,7 @@ Apresentação e entrega final: **24/11/2026** (commits até 09:30).
 - [ ] #32 Testes de partidas e sorteio (Arthur)
 - [ ] #33 Melhorar prompt pelo feedback (Arthur)
 - [x] #39 Prompt da crônica e do craque (Gabriel)
-- [ ] #40 Endpoint da crônica (Gabriel)
+- [x] #40 Endpoint da crônica (Gabriel)
 - [ ] #41 Tela pós-jogo (Gabriel)
 - [ ] #42 API de ranking (Gabriel)
 - [ ] #43 Tela de ranking (Gabriel)
@@ -132,6 +132,8 @@ O usuario customizado e `contas.Usuario` (`settings.AUTH_USER_MODEL`): use `sett
 | POST | `/api/partidas/{id}/confirmar-times/` | publica o rascunho para o grupo (organizador) |
 | POST | `/api/partidas/{id}/trocar/` | `{jogador_a, jogador_b}` troca dois jogadores de time (organizador) |
 | GET/PUT | `/api/partidas/{id}/resultado/` | placar; PUT `{gols: [{time, jogador\|null, quantidade}]}` (organizador) |
+| GET | `/api/partidas/{id}/resultado/cronica/` | cronica da rodada e craque (membros); `desatualizada: true` se o placar mudou depois |
+| POST | `/api/partidas/{id}/resultado/cronica/` | IA escreve (ou reescreve) a cronica e escolhe o craque (organizador). Se a IA falhar: `status: "erro"` e o artilheiro como craque |
 
 Status da partida: `aberta` (presenca) → `rascunho` (organizador confere) → `publicada` → `encerrada` (com resultado).
 

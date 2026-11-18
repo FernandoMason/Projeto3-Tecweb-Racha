@@ -50,3 +50,41 @@ class Gol(models.Model):
     def __str__(self):
         autor = self.jogador.usuario.nome if self.jogador else 'sem autor'
         return f'{autor} x{self.quantidade} ({self.time.nome})'
+
+
+class Cronica(models.Model):
+    """
+    Cronica da rodada e craque escritos pela IA (#40). Gerada depois do placar,
+    por POST /api/partidas/{id}/resultado/cronica/, para o PUT do resultado nao esperar a IA.
+    """
+
+    class Status(models.TextChoices):
+        OK = 'ok', 'Gerada pela IA'
+        ERRO = 'erro', 'A IA falhou'
+
+    class OrigemCraque(models.TextChoices):
+        IA = 'ia', 'Escolhido pela IA'
+        ARTILHEIRO = 'artilheiro', 'Artilheiro (plano B)'
+
+    resultado = models.OneToOneField(Resultado, on_delete=models.CASCADE, related_name='cronica')
+    status = models.CharField(max_length=4, choices=Status.choices)
+    titulo = models.CharField(max_length=80, blank=True)
+    texto = models.TextField(blank=True)
+    craque = models.ForeignKey(
+        Membro, on_delete=models.SET_NULL, null=True, blank=True, related_name='cronicas_como_craque'
+    )
+    motivo_craque = models.CharField(max_length=220, blank=True)
+    # vazio quando nao ha craque (0 x 0 e a IA falhou)
+    origem_craque = models.CharField(max_length=10, choices=OrigemCraque.choices, blank=True)
+    erro = models.CharField(max_length=200, blank=True)  # mensagem para a tela quando status=erro
+    gerada_em = models.DateTimeField()
+    # Copia de resultado.registrado_em no inicio da geracao. Se o placar for corrigido depois,
+    # os dois ficam diferentes e a cronica esta desatualizada.
+    baseada_em = models.DateTimeField()
+
+    def __str__(self):
+        return f'Crônica de {self.resultado.partida} ({self.status})'
+
+    @property
+    def desatualizada(self):
+        return self.baseada_em != self.resultado.registrado_em
