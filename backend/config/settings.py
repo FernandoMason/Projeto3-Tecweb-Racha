@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     # apps do projeto
     'contas',
     'grupos',
+    'ia',
+    'partidas',
+    'resultados',
 ]
 
 MIDDLEWARE = [
@@ -114,5 +117,8 @@ SIMPLE_JWT = {
 # --- CORS (frontend Vite em dev) ---
 CORS_ALLOWED_ORIGINS = env_list('CORS_ALLOWED_ORIGINS', 'http://localhost:5173,http://127.0.0.1:5173')
 
-# Chave do Gemini (usada pelas partes do Arthur e do Gabriel)
+# --- Gemini (sorteio de times e cronica) ---
+# Chave gratis em https://aistudio.google.com/apikey. Sem chave o sorteio usa o algoritmo de reserva.
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
+GEMINI_MODEL = os.getenv('GEMINI_MODEL', 'gemini-2.5-flash')
+GEMINI_TIMEOUT_MS = int(os.getenv('GEMINI_TIMEOUT_MS', '30000'))

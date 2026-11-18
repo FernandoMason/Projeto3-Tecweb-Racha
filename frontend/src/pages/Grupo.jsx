@@ -6,6 +6,7 @@ import Avatar from '../components/Avatar.jsx'
 import Aviso from '../components/Aviso.jsx'
 import Carregando from '../components/Carregando.jsx'
 import { Cabecalho } from '../components/Layout.jsx'
+import ListaPartidas from '../components/ListaPartidas.jsx'
 import { POSICOES } from '../components/posicoes.js'
 
 const NOME_POSICAO = Object.fromEntries(POSICOES.map((p) => [p.valor, p.nome]))
@@ -133,9 +134,7 @@ function Grupo({ id }) {
       />
 
       <section className="mt-6" role="tabpanel">
-        {aba === 'partidas' && (
-          <EmBreve titulo="Nenhuma partida marcada" texto="As partidas e o sorteio de times com IA chegam na próxima entrega." />
-        )}
+        {aba === 'partidas' && <ListaPartidas grupo={grupo} />}
         {aba === 'membros' && <ListaMembros grupoId={grupo.id} />}
         {aba === 'ranking' && (
           <EmBreve titulo="Ranking ainda vazio" texto="Artilharia, vitórias e craques aparecem depois das primeiras partidas." />
