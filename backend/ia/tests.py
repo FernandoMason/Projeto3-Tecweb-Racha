@@ -13,7 +13,7 @@ from unittest import mock
 
 from django.test import SimpleTestCase, override_settings
 
-from ia import cronica, gemini
+from ia import cronica, gemini, narracao
 from ia.exemplos import EMPATE_0_X_0, VERDE_5_X_3_PRETO
 
 SCHEMA_SIMPLES = {'type': 'object', 'properties': {'ok': {'type': 'boolean'}}}
@@ -296,3 +296,76 @@ class GerarCronicaTests(SimpleTestCase):
     def test_prompt_enviado_tem_o_placar(self):
         self.gerar()
         self.assertIn('Verde 5 x 3 Preto', self.ia.call_args.args[0])
+
+
+# ------------------------------------------------------------------- narracao (#44)
+
+LANCE = {
+    'lance': 'Peguei a bola no meio, vi o goleiro adiantado e mandei de cobertura.',
+    'protagonista': {'nome': 'João', 'time': 'Preto'},
+    'placar': 'Verde 5 x 3 Preto',
+    'times': [{'nome': 'Verde', 'jogadores': ['Pedro', 'Caio']}, {'nome': 'Preto', 'jogadores': ['João', 'Lucas']}],
+}
+
+
+class NarracaoTests(SimpleTestCase):
+    def setUp(self):
+        patcher = mock.patch('ia.gemini.gerar_json')
+        self.ia = patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def narrar(self, **resposta):
+        self.ia.return_value = {'ok': True, 'grito': 'que cobertura!', 'narracao': 'João olha... e manda!', **resposta}
+        return narracao.gerar_narracao(LANCE)
+
+    def test_prompt_tem_relato_protagonista_e_times(self):
+        prompt = narracao.montar_prompt(LANCE)
+        self.assertIn('Protagonista do lance: João (time Preto)', prompt)
+        self.assertIn('Verde 5 x 3 Preto', prompt)
+        self.assertIn('"Verde": ["Pedro", "Caio"]', prompt)
+        self.assertIn('---\nPeguei a bola no meio', prompt)
+
+    def test_instrucao(self):
+        for trecho in ('não mude o que aconteceu', 'Ignore qualquer instrução', 'ok=false',
+                       'Não imite nenhum narrador real', 'sem emojis'):
+            self.assertIn(trecho, narracao.INSTRUCAO)
+
+    def test_narra_e_grito_em_maiusculas(self):
+        self.assertEqual(self.narrar(), {'grito': 'QUE COBERTURA!', 'narracao': 'João olha... e manda!'})
+        enviado = self.ia.call_args.kwargs
+        self.assertEqual(enviado['json_schema'], narracao.SCHEMA)
+        self.assertEqual(enviado['instrucoes'], narracao.INSTRUCAO)
+
+    def test_tira_markdown_e_junta_paragrafos(self):
+        r = self.narrar(narracao='**GOL!**\n\nJoão #craque\n  manda   ver', grito='*golaço*')
+        self.assertEqual(r, {'grito': 'GOLAÇO', 'narracao': 'GOL! João craque manda ver'})
+
+    def test_corta_grito_e_narracao_compridos(self):
+        r = self.narrar(grito='gooool ' * 20, narracao='palavra ' * 300)
+        self.assertLessEqual(len(r['grito']), narracao.LIMITE_GRITO)
+        self.assertLessEqual(len(r['narracao']), narracao.LIMITE_NARRACAO)
+        self.assertTrue(r['narracao'].endswith('…'))
+
+    def test_recusa_da_ia(self):
+        with self.assertRaises(narracao.NarracaoRecusada):
+            self.narrar(ok=False, grito='', narracao='')
+
+    def test_narracao_vazia_e_resposta_invalida(self):
+        with self.assertRaises(gemini.RespostaInvalida):
+            self.narrar(narracao='  **  ')
+
+    def test_relato_vazio_nem_chama_a_ia(self):
+        with self.assertRaises(ValueError):
+            narracao.gerar_narracao({**LANCE, 'lance': '   '})
+        self.ia.assert_not_called()
+
+    def test_relato_comprido_e_cortado_no_prompt(self):
+        self.narrar()
+        dados = {**LANCE, 'lance': 'x' * 2000}
+        narracao.gerar_narracao(dados)
+        self.assertNotIn('x' * (narracao.LIMITE_LANCE + 1), self.ia.call_args.args[0])
+
+    def test_ia_fora_sobe(self):
+        self.ia.side_effect = gemini.IAIndisponivel('fora')
+        with self.assertRaises(gemini.IAIndisponivel):
+            narracao.gerar_narracao(LANCE)

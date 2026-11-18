@@ -135,6 +135,10 @@ O usuario customizado e `contas.Usuario` (`settings.AUTH_USER_MODEL`): use `sett
 | GET | `/api/partidas/{id}/resultado/cronica/` | cronica da rodada e craque (membros); `desatualizada: true` se o placar mudou depois |
 | POST | `/api/partidas/{id}/resultado/cronica/` | IA escreve (ou reescreve) a cronica e escolhe o craque (organizador). Se a IA falhar: `status: "erro"` e o artilheiro como craque |
 | GET | `/api/grupos/{id}/ranking/` | artilharia, vitorias e craques do grupo, com colocacao (membros) |
+| GET | `/api/partidas/{id}/narracoes/` | mural: narracoes publicadas da partida, mais nova primeiro (membros) |
+| POST | `/api/partidas/{id}/narracoes/` | `{lance, protagonista?}`: a IA narra o lance e cria um rascunho (membros). 422 se nao for lance de futebol, 503 se a IA falhar |
+| POST | `/api/narracoes/{id}/publicar/` | leva o rascunho para o mural (autor) |
+| DELETE | `/api/narracoes/{id}/` | apaga a narracao (autor ou organizador) |
 
 Status da partida: `aberta` (presenca) → `rascunho` (organizador confere) → `publicada` → `encerrada` (com resultado).
 
