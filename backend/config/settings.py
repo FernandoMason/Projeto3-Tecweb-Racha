@@ -121,4 +121,4 @@ CORS_ALLOWED_ORIGINS = env_list('CORS_ALLOWED_ORIGINS', 'http://localhost:5173,h
 # Chave gratis em https://aistudio.google.com/apikey. Sem chave o sorteio usa o algoritmo de reserva.
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
 GEMINI_MODEL = os.getenv('GEMINI_MODEL', 'gemini-2.5-flash')
-GEMINI_TIMEOUT_MS = int(os.getenv('GEMINI_TIMEOUT_MS', '30000'))
+GEMINI_TIMEOUT_MS = int(os.getenv('GEMINI_TIMEOUT_MS', '20000'))
