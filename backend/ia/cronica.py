@@ -6,14 +6,14 @@ Entrada (dict simples, montado a partir do resultado salvo):
         'grupo': 'Pelada de quinta',
         'data': '2026-11-13',            # ISO, opcional
         'local': 'Arena Society',        # opcional
-        'times': [
+        'times': [                       # 2 ou mais (Partida.num_times)
             {'nome': 'Verde', 'gols': 5, 'jogadores': [
                 {'id': 1, 'nome': 'João', 'posicao': 'ATA', 'gols': 3}, ...]},
             {'nome': 'Preto', 'gols': 3, 'jogadores': [...]},
         ],
     }
 `id` e o id do Membro no grupo. Os gols de cada time podem ser maiores que a soma
-dos gols dos jogadores (gol sem autor marcado), mas nunca menores.
+dos gols dos jogadores (gol contra ou sem autor marcado), mas nunca menores.
 
 Saida de gerar_cronica():
     {
@@ -23,15 +23,15 @@ Saida de gerar_cronica():
         'origem_craque': 'ia' | 'artilheiro',
     }
 
-Se a IA falhar, gerar_cronica() levanta ErroIA e quem chamou usa craque_padrao()
-(o artilheiro) para a partida nao ficar sem craque.
+Se a IA falhar, gerar_cronica() levanta gemini.IAIndisponivel ou gemini.RespostaInvalida,
+e quem chamou usa craque_padrao() (o artilheiro) para a partida nao ficar sem craque.
 """
 
 import json
 import re
 from datetime import date
 
-from .cliente import ErroIA, gerar_json
+from . import gemini
 
 LIMITE_TITULO = 70
 LIMITE_TEXTO = 1800
@@ -86,8 +86,8 @@ SCHEMA = {
 def validar_dados(dados):
     """Confere o formato da entrada. Erro aqui e bug de quem chamou, nao da IA."""
     times = dados.get('times') or []
-    if len(times) != 2:
-        raise ValueError('A crônica precisa de exatamente 2 times.')
+    if len(times) < 2:
+        raise ValueError('A crônica precisa de pelo menos 2 times.')
     ids = set()
     for time in times:
         if not time.get('nome'):
@@ -114,10 +114,21 @@ def _todos_jogadores(dados):
 
 
 def _indice_vencedor(dados):
-    gols_a, gols_b = (int(t['gols']) for t in dados['times'])
-    if gols_a == gols_b:
+    """Indice do time com mais gols, ou None se houve empate no topo (mesma regra de Resultado.vencedor)."""
+    gols = [int(t['gols']) for t in dados['times']]
+    maior = max(gols)
+    if gols.count(maior) > 1:
         return None
-    return 0 if gols_a > gols_b else 1
+    return gols.index(maior)
+
+
+def _placar_em_texto(dados):
+    """'Verde 5 x 3 Preto' com 2 times; 'Verde 5, Preto 3, Azul 1' com mais."""
+    times = dados['times']
+    if len(times) == 2:
+        time_a, time_b = times
+        return f'{time_a["nome"]} {time_a["gols"]} x {time_b["gols"]} {time_b["nome"]}'
+    return ', '.join(f'{t["nome"]} {t["gols"]}' for t in times)
 
 
 def craque_padrao(dados):
@@ -156,10 +167,9 @@ def _data_por_extenso(valor):
 
 def montar_prompt(dados):
     """Monta o texto enviado ao Gemini. Separado para poder testar sem chamar a IA."""
-    time_a, time_b = dados['times']
     vencedor = _indice_vencedor(dados)
     if vencedor is None:
-        situacao = 'Empate.'
+        situacao = 'Empate.' if len(dados['times']) == 2 else 'Empate no topo.'
     else:
         situacao = f'Vitória do {dados["times"][vencedor]["nome"]}.'
 
@@ -170,7 +180,7 @@ def montar_prompt(dados):
         contexto.append(f'Local: {dados["local"]}')
 
     dados_partida = {
-        'placar': f'{time_a["nome"]} {time_a["gols"]} x {time_b["gols"]} {time_b["nome"]}',
+        'placar': _placar_em_texto(dados),
         'times': [
             {
                 'nome': time['nome'],
@@ -202,7 +212,8 @@ Dados da partida (JSON):
 O que entregar:
 1. titulo: manchete curta e criativa (no máximo {LIMITE_TITULO} caracteres), sem o placar.
 2. texto: crônica de 2 ou 3 parágrafos, de 90 a 160 palavras, separados por uma linha em branco. \
-Cite o placar e quem marcou. Se houver gols sem autor marcado, não atribua esses gols a ninguém.
+Cite o placar e quem marcou. Gols sem autor marcado são gols contra ou de autor não anotado: \
+não atribua esses gols a ninguém.
 3. craque_id: o id do craque da rodada, escolhido entre os jogadores acima. Pese gols, \
 resultado do time e posição: um goleiro ou zagueiro de time que sofreu poucos gols também pode ser craque.
 4. motivo_craque: uma frase curta explicando a escolha, só com os fatos acima."""
@@ -230,15 +241,20 @@ def _normalizar_paragrafos(texto):
     return '\n\n'.join(p for p in paragrafos if p)
 
 
-def gerar_cronica(dados, *, modelo=None):
-    """Chama o Gemini e devolve titulo, texto e craque. Levanta ErroIA se a IA falhar."""
+def gerar_cronica(dados):
+    """
+    Chama o Gemini e devolve titulo, texto e craque.
+    Levanta gemini.IAIndisponivel (sem chave, rede, cota) ou gemini.RespostaInvalida (formato errado).
+    """
     validar_dados(dados)
-    resposta = gerar_json(montar_prompt(dados), schema=SCHEMA, instrucao=INSTRUCAO, temperatura=1.0, modelo=modelo)
+    resposta = gemini.gerar_json(montar_prompt(dados), json_schema=SCHEMA, instrucoes=INSTRUCAO, temperatura=1.0)
+    if not isinstance(resposta, dict):
+        raise gemini.RespostaInvalida(f'Esperava um objeto JSON, veio {type(resposta).__name__}.')
 
     titulo = _cortar(resposta.get('titulo'), LIMITE_TITULO)
     texto = _cortar(_normalizar_paragrafos(resposta.get('texto')), LIMITE_TEXTO, uma_linha=False)
     if not titulo or not texto:
-        raise ErroIA('resposta_invalida', 'titulo ou texto vazio')
+        raise gemini.RespostaInvalida('A IA devolveu título ou texto vazio.')
 
     # A IA escolhe o craque, mas so vale se for alguem que jogou. Senao, artilheiro.
     jogadores = {j['id']: j for _, _, j in _todos_jogadores(dados)}

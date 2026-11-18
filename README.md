@@ -30,11 +30,11 @@ Apresentação e entrega final: **24/11/2026** (commits até 09:30).
 - [ ] #24 Tela de nova partida (Arthur)
 - [ ] #25 Tela da partida (Arthur)
 - [ ] #26 Dados de teste (seed) (Arthur)
-- [ x] #34 Configurar o Gemini (Gabriel)
-- [x] #35 Cliente do Gemini (Gabriel)
-- [x ] #36 Modelos Resultado e Gol (Gabriel)
-- [x ] #37 API de resultado (Gabriel)
-- [x ] #38 Tela de resultado (Gabriel)
+- [x] #34 Configurar o Gemini (Arthur)
+- [x] #35 Cliente do Gemini (Gabriel, Arthur)
+- [x] #36 Modelos Resultado e Gol (Arthur)
+- [x] #37 API de resultado (Arthur)
+- [x] #38 Tela de resultado (Arthur)
 
 ### Sprint 2 · 16/11 a 19/11
 
@@ -52,7 +52,7 @@ Apresentação e entrega final: **24/11/2026** (commits até 09:30).
 - [ ] #31 Ajuste manual dos times (Arthur)
 - [ ] #32 Testes de partidas e sorteio (Arthur)
 - [ ] #33 Melhorar prompt pelo feedback (Arthur)
-- [ ] #39 Prompt da crônica e do craque (Gabriel)
+- [x] #39 Prompt da crônica e do craque (Gabriel)
 - [ ] #40 Endpoint da crônica (Gabriel)
 - [ ] #41 Tela pós-jogo (Gabriel)
 - [ ] #42 API de ranking (Gabriel)
