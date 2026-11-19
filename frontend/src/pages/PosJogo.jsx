@@ -6,12 +6,14 @@ import Aviso from '../components/Aviso.jsx'
 import Botao from '../components/Botao.jsx'
 import Carregando from '../components/Carregando.jsx'
 import { Cabecalho } from '../components/Layout.jsx'
+import MuralNarracoes from '../components/MuralNarracoes.jsx'
 import Placar from '../components/Placar.jsx'
 import SeloIA from '../components/SeloIA.jsx'
 import { dataHora, placarCurto } from '../components/partida.js'
 
 /**
- * Tela 12 · Crônica da rodada: placar, crônica e craque escritos pela IA.
+ * Tela 12 · Crônica da rodada: placar, crônica e craque escritos pela IA,
+ * o botão "Narrar lance" (tela 13) e o mural de narrações da partida (#44).
  *
  * Quando o organizador abre a tela e a crônica ainda não existe (acabou de lançar o placar)
  * ou está desatualizada (corrigiu o placar), ela é gerada na hora.
@@ -133,15 +135,21 @@ function PosJogo({ id }) {
           {!gerando && cronica?.status === 'ok' && (
             <Compartilhar cronica={cronica} placar={resultado.placar} grupo={partida.grupo_nome} />
           )}
+          <Botao variante="campo" para={`/partidas/${id}/narrar`}>
+            ✦ Narrar lance
+          </Botao>
           {partida.eh_organizador && !gerando && (
-            <Botao variante={cronica?.status === 'ok' ? 'secundario' : 'campo'} onClick={gerar}>
+            <Botao variante="secundario" onClick={gerar}>
               {cronica?.status === 'ok' ? 'Escrever outra crônica' : 'Tentar gerar de novo'}
             </Botao>
           )}
-          <Botao variante="fantasma" para={voltar}>
-            Voltar para a partida
-          </Botao>
         </div>
+
+        <MuralNarracoes partidaId={id} />
+
+        <Botao variante="fantasma" para={voltar}>
+          Voltar para a partida
+        </Botao>
       </div>
     </>
   )

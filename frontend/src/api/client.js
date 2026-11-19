@@ -122,4 +122,10 @@ export const resultadosApi = {
   gerarCronica: (partidaId) =>
     api.post(`/partidas/${partidaId}/resultado/cronica/`, null, { timeout: 90000 }).then((r) => r.data),
   ranking: (grupoId) => api.get(`/grupos/${grupoId}/ranking/`).then((r) => r.data),
+  // narração do lance (#44): o POST espera a IA, como a crônica
+  narracoes: (partidaId) => api.get(`/partidas/${partidaId}/narracoes/`).then((r) => r.data),
+  narrar: (partidaId, dados) =>
+    api.post(`/partidas/${partidaId}/narracoes/`, dados, { timeout: 90000 }).then((r) => r.data),
+  publicarNarracao: (id) => api.post(`/narracoes/${id}/publicar/`).then((r) => r.data),
+  apagarNarracao: (id) => api.delete(`/narracoes/${id}/`),
 }

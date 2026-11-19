@@ -57,7 +57,7 @@ Apresentação e entrega final: **24/11/2026** (commits até 09:30).
 - [x] #41 Tela pós-jogo (Gabriel)
 - [x] #42 API de ranking (Gabriel)
 - [x] #43 Tela de ranking (Gabriel)
-- [ ] #44 Narração do lance, diferencial (Gabriel)
+- [x] #44 Narração do lance, diferencial (Gabriel)
 - [ ] #45 README final (Gabriel)
 - [ ] #46 Teste com usuários (Fernando, Arthur, Gabriel)
 - [ ] #47 Ajustes a partir do feedback (Fernando, Arthur, Gabriel)
