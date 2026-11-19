@@ -88,3 +88,26 @@ class Cronica(models.Model):
     @property
     def desatualizada(self):
         return self.baseada_em != self.resultado.registrado_em
+
+
+class Narracao(models.Model):
+    """
+    Narracao de um lance (#44): o jogador descreve, a IA narra, o audio sai no navegador.
+    Nasce como rascunho (so o autor ve) e vai para o mural da partida quando e publicada.
+    """
+
+    partida = models.ForeignKey(Partida, on_delete=models.CASCADE, related_name='narracoes')
+    autor = models.ForeignKey(Membro, on_delete=models.CASCADE, related_name='narracoes_escritas')
+    protagonista = models.ForeignKey(Membro, on_delete=models.CASCADE, related_name='narracoes_como_protagonista')
+    lance = models.CharField(max_length=500)  # relato do jogador
+    grito = models.CharField(max_length=60, blank=True)
+    narracao = models.TextField()
+    publicada = models.BooleanField(default=False)
+    criada_em = models.DateTimeField(auto_now_add=True)
+    publicada_em = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['-publicada_em', '-criada_em']
+
+    def __str__(self):
+        return f'{self.grito or "Narração"} ({self.partida})'
