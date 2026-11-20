@@ -19,6 +19,24 @@ frontend em React + Vite + Tailwind, IA com o Gemini (Google).
 - **App (frontend):** _a preencher_
 - **API (backend):** _a preencher_
 
+### Como publicar
+
+**Backend no Render (#17).** O arquivo [`render.yaml`](render.yaml) cria o serviço web e o PostgreSQL:
+no Render, *New → Blueprint* e escolha este repositório. Ele já configura:
+- `gunicorn ... --timeout 60` (o padrão de 30 s derrubaria o sorteio e a crônica enquanto a IA pensa);
+- `GEMINI_MODEL=gemini-3.5-flash-lite` e `GEMINI_TIMEOUT_MS=20000` (a IA desiste antes do gunicorn e cai no plano B);
+- `DATABASE_URL` do PostgreSQL, `DJANGO_SECRET_KEY` gerada, `DJANGO_DEBUG=False`;
+- o build ([`backend/build.sh`](backend/build.sh)) instala, roda `collectstatic` e `migrate`.
+
+Preencha no painel: `GEMINI_API_KEY` e `CORS_ALLOWED_ORIGINS` (o endereço da Vercel, ex.: `https://racha.vercel.app`).
+Para ter dados de exemplo: *Shell* do serviço → `python manage.py popular_racha`.
+O domínio `*.onrender.com` entra sozinho no `ALLOWED_HOSTS` e no `CSRF_TRUSTED_ORIGINS`.
+A montagem automática dos times roda quando alguém abre a partida ou o grupo, então não precisa de cron.
+
+**Frontend na Vercel (#18).** *Add New → Project*, este repositório, **Root Directory `frontend`**
+(o [`vercel.json`](frontend/vercel.json) já faz as rotas do React funcionarem ao recarregar a página).
+Variável de ambiente: `VITE_API_URL=https://<seu-servico>.onrender.com/api`.
+
 ## Cronograma
 
 Duas sprints, conforme o enunciado. Cada item corresponde a uma issue do quadro (GitHub Projects), com o responsável.
@@ -59,10 +77,10 @@ Apresentação e entrega final: **24/11/2026** (commits até 09:30).
 
 **Entrega:** organizador edita notas e posições; times montados pela IA (automaticamente antes do jogo), com validação de equilíbrio e ajuste manual; crônica da rodada e craque escritos pela IA; ranking do grupo; narração de lances com texto e áudio (diferencial); deploy público; teste com usuários reais e ajustes.
 
-- [ ] #16 Gestão de membros (Fernando)
+- [x] #16 Gestão de membros (Fernando)
 - [ ] #17 Deploy do backend (Fernando)
 - [ ] #18 Deploy do frontend (Fernando)
-- [ ] #19 Testes de contas e grupos (Fernando)
+- [x] #19 Testes de contas e grupos (Fernando)
 - [ ] #20 Polimento geral da interface (Fernando)
 - [ ] #27 Prompt do sorteio de times (Arthur)
 - [ ] #28 Validação de equilíbrio (Arthur)
@@ -151,7 +169,9 @@ Contrato completo, com campos, regras e exemplos de resposta reais: [docs/api.md
 | GET | `/api/grupos/` | meus grupos |
 | POST | `/api/grupos/` | cria grupo `{nome}` (quem cria vira organizador) |
 | GET | `/api/grupos/{id}/` | detalhe do grupo (so membros) |
-| GET | `/api/grupos/{id}/membros/` | membros com posicao e nota |
+| GET | `/api/grupos/{id}/membros/` | membros com posicao (a nota so aparece para o organizador) |
+| PATCH | `/api/grupos/{id}/membros/{membro_id}/` | organizador edita `{posicao, nota}` de um membro |
+| GET | `/api/saude/` | health check do deploy (sem login) |
 | POST | `/api/grupos/entrar/` | entra com `{codigo}` (ex.: `RACHA-7K2`) |
 
 Todas as rotas, exceto cadastro/login/refresh, pedem `Authorization: Bearer <access>`.
