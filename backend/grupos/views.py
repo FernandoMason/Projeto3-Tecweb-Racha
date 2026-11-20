@@ -2,10 +2,12 @@ from django.db import transaction
 from django.db.models import Count
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.exceptions import PermissionDenied
+from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
 from .models import Grupo, Membro
-from .serializers import EntrarGrupoSerializer, GrupoSerializer, MembroSerializer
+from .serializers import EditarMembroSerializer, EntrarGrupoSerializer, GrupoSerializer, MembroSerializer
 
 
 class GrupoViewSet(
@@ -18,7 +20,8 @@ class GrupoViewSet(
     GET  /api/grupos/               meus grupos
     POST /api/grupos/               criar grupo (quem cria vira organizador)
     GET  /api/grupos/{id}/          detalhe (so membros)
-    GET  /api/grupos/{id}/membros/  membros do grupo
+    GET  /api/grupos/{id}/membros/  membros do grupo (a nota so aparece para o organizador)
+    PATCH /api/grupos/{id}/membros/{membro_id}/  organizador edita {posicao, nota}
     POST /api/grupos/entrar/        entrar com {codigo}
     """
 
@@ -48,11 +51,26 @@ class GrupoViewSet(
         grupo = self.get_queryset().get(pk=serializer.instance.pk)
         return Response(self.get_serializer(grupo).data, status=status.HTTP_201_CREATED)
 
+    def _sou_organizador(self, grupo):
+        return grupo.membros.filter(usuario=self.request.user, papel=Membro.Papel.ORGANIZADOR).exists()
+
     @action(detail=True)
     def membros(self, request, pk=None):
         grupo = self.get_object()
         membros = grupo.membros.select_related('usuario')
-        return Response(MembroSerializer(membros, many=True).data)
+        contexto = {'mostrar_nota': self._sou_organizador(grupo)}
+        return Response(MembroSerializer(membros, many=True, context=contexto).data)
+
+    @action(detail=True, methods=['patch'], url_path=r'membros/(?P<membro_id>\d+)')
+    def editar_membro(self, request, pk=None, membro_id=None):
+        grupo = self.get_object()  # 404 para quem nao e do grupo
+        if not self._sou_organizador(grupo):
+            raise PermissionDenied('Só o organizador pode editar os jogadores.')
+        membro = get_object_or_404(grupo.membros.select_related('usuario'), pk=membro_id)
+        edicao = EditarMembroSerializer(membro, data=request.data, partial=True)
+        edicao.is_valid(raise_exception=True)
+        edicao.save()
+        return Response(MembroSerializer(membro, context={'mostrar_nota': True}).data)
 
     @action(detail=False, methods=['post'])
     def entrar(self, request):

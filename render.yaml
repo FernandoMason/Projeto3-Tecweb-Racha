@@ -1,0 +1,41 @@
+# Deploy do backend no Render (#17): Blueprint com o servico web (Django + gunicorn) e o PostgreSQL.
+# No painel do Render: New > Blueprint > escolher este repositorio. Depois preencher as variaveis "sync: false".
+services:
+  - type: web
+    name: racha-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: ./build.sh
+    # --timeout 60: o gunicorn derruba o pedido em 30 s por padrao, e a IA do sorteio/cronica pode demorar.
+    # O Gemini desiste antes (GEMINI_TIMEOUT_MS=20000), entao a falha vira o plano B e nao um erro 502.
+    startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --timeout 60 --workers 2
+    healthCheckPath: /api/saude/
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.14.3
+      - key: DATABASE_URL
+        fromDatabase:
+          name: racha-db
+          property: connectionString
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: DJANGO_ALLOWED_HOSTS
+        value: localhost
+      # endereco do frontend na Vercel, ex.: https://racha.vercel.app
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-3.5-flash-lite
+      - key: GEMINI_TIMEOUT_MS
+        value: "20000"
+
+databases:
+  - name: racha-db
+    plan: free
+    databaseName: racha
+    user: racha

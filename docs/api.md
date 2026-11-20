@@ -66,7 +66,8 @@ pelos validadores de senha do Django (não pode ser parecida com o nome ou o e-m
 | GET | `/api/grupos/` | logado | — | meus grupos, o mais novo primeiro |
 | POST | `/api/grupos/` | logado | `{nome}` (3+ letras) | cria o grupo; quem cria vira **organizador**. **201** |
 | GET | `/api/grupos/{id}/` | membros | — | detalhe do grupo |
-| GET | `/api/grupos/{id}/membros/` | membros | — | membros com papel, posição e nota |
+| GET | `/api/grupos/{id}/membros/` | membros | — | membros com papel e posição. A **`nota`** só vem para o organizador |
+| PATCH | `/api/grupos/{id}/membros/{membro_id}/` | organizador | `{posicao?, nota?}` | edita a posição no grupo e a nota (1 a 10) de um membro (#16). Devolve o membro |
 | POST | `/api/grupos/entrar/` | logado | `{codigo}` | entra pelo código de convite. **201** se entrou agora, **200** se já era membro |
 
 O `codigo` aceita `RACHA-57S`, `racha-57s` ou só `57s`.
@@ -78,7 +79,8 @@ O `codigo` aceita `RACHA-57S`, `racha-57s` ou só `57s`.
    "meu_papel": "organizador", "criado_em": "2026-11-19T08:35:21.497703-03:00"}
 ]
 
-// GET /api/grupos/14/membros/   ("id" é o id do Membro; "usuario_id" é o do Usuario)
+// GET /api/grupos/14/membros/   pelo organizador ("id" é o id do Membro; "usuario_id" é o do Usuario).
+// Para os outros membros, o mesmo JSON sem o campo "nota".
 [
   {"id": 157, "usuario_id": 155, "nome": "João", "papel": "organizador", "posicao": "ATA", "nota": 9,
    "entrou_em": "2026-11-19T08:35:21.498711-03:00"},
@@ -86,6 +88,14 @@ O `codigo` aceita `RACHA-57S`, `racha-57s` ou só `57s`.
    "entrou_em": "2026-11-19T08:35:21.499237-03:00"}
   …
 ]
+
+// PATCH /api/grupos/14/membros/158/  {"posicao": "GOL", "nota": 9}   (organizador)
+// 200
+{"id": 158, "usuario_id": 156, "nome": "Pedro", "papel": "jogador", "posicao": "GOL", "nota": 9,
+ "entrou_em": "2026-11-19T08:35:21.499237-03:00"}
+// 403 para jogador: {"detail": "Só o organizador pode editar os jogadores."}
+// 400 com nota fora de 1 a 10: {"nota": ["A nota vai de 1 a 10."]}
+// 404 se o membro não for deste grupo. O papel não muda por aqui, e a posição da conta também não.
 
 // POST /api/grupos/entrar/  {"codigo": "RACHA-ZZZ"}
 // 400

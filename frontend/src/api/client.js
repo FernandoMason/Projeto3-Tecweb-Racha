@@ -99,6 +99,9 @@ export const gruposApi = {
   entrar: (codigo) => api.post('/grupos/entrar/', { codigo }).then((r) => r.data),
   detalhe: (id) => api.get(`/grupos/${id}/`).then((r) => r.data),
   membros: (id) => api.get(`/grupos/${id}/membros/`).then((r) => r.data),
+  // organizador edita {posicao, nota} de um membro (#16)
+  editarMembro: (grupoId, membroId, dados) =>
+    api.patch(`/grupos/${grupoId}/membros/${membroId}/`, dados).then((r) => r.data),
 }
 
 // --- Partidas, presenca, sorteio e resultado (Arthur) ---
