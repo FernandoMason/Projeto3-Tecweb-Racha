@@ -5,6 +5,8 @@ import { useAuth } from '../auth/AuthContext.jsx'
 import Aviso from '../components/Aviso.jsx'
 import Botao from '../components/Botao.jsx'
 import Campo from '../components/Campo.jsx'
+import { LinkVoltar } from '../components/Layout.jsx'
+import useTitulo from '../components/useTitulo.js'
 import SeletorPosicao from '../components/SeletorPosicao.jsx'
 
 /** Tela 3 · Cadastro */
@@ -15,6 +17,7 @@ export default function Cadastro() {
   const [erros, setErros] = useState({})
   const [erroGeral, setErroGeral] = useState('')
   const [enviando, setEnviando] = useState(false)
+  useTitulo('Criar conta')
 
   const mudar = (campo) => (e) => setForm((f) => ({ ...f, [campo]: e.target.value }))
 
@@ -40,9 +43,7 @@ export default function Cadastro() {
 
   return (
     <main className="mx-auto flex min-h-dvh max-w-sm flex-col justify-center px-6 py-10">
-      <Link to="/" className="mb-8 w-fit text-xs font-semibold text-gray-500 hover:text-tinta">
-        ← Voltar
-      </Link>
+      <LinkVoltar para="/" className="mb-6" />
       <h1 className="text-2xl font-extrabold tracking-tight">Criar conta</h1>
       <p className="mt-1 text-sm text-gray-500">Leva menos de um minuto.</p>
 

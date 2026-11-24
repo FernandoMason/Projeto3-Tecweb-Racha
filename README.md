@@ -81,7 +81,7 @@ Apresentação e entrega final: **24/11/2026** (commits até 09:30).
 - [ ] #17 Deploy do backend (Fernando)
 - [ ] #18 Deploy do frontend (Fernando)
 - [x] #19 Testes de contas e grupos (Fernando)
-- [ ] #20 Polimento geral da interface (Fernando)
+- [x] #20 Polimento geral da interface (Fernando)
 - [ ] #27 Prompt do sorteio de times (Arthur)
 - [ ] #28 Validação de equilíbrio (Arthur)
 - [ ] #29 Montagem automática dos times (Arthur)

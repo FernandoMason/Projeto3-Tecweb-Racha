@@ -6,6 +6,7 @@ import Botao from '../components/Botao.jsx'
 import Card from '../components/Card.jsx'
 import Carregando from '../components/Carregando.jsx'
 import { Cabecalho } from '../components/Layout.jsx'
+import Vazio from '../components/Vazio.jsx'
 
 /** Tela 4 · Meus grupos */
 export default function MeusGrupos() {
@@ -27,10 +28,9 @@ export default function MeusGrupos() {
       {grupos === null && !erro && <Carregando />}
 
       {grupos?.length === 0 && (
-        <div className="rounded-2xl border-2 border-dashed border-gray-300 px-6 py-10 text-center">
-          <p className="font-semibold">Você ainda não está em nenhum grupo</p>
-          <p className="mt-1 text-sm text-gray-500">Crie a pelada da sua turma ou entre com o código de convite.</p>
-        </div>
+        <Vazio titulo="Você ainda não está em nenhum grupo">
+          Crie a pelada da sua turma ou entre com o código de convite.
+        </Vazio>
       )}
 
       {grupos?.length > 0 && (

@@ -4,6 +4,8 @@ import Aviso from './Aviso.jsx'
 import Botao from './Botao.jsx'
 import Card from './Card.jsx'
 import Carregando from './Carregando.jsx'
+import RotuloSecao from './RotuloSecao.jsx'
+import Vazio from './Vazio.jsx'
 import { ROTULO_STATUS, dataHora, hora, jaPassou, placarCurto } from './partida.js'
 
 function ChipPresenca({ status }) {
@@ -57,19 +59,16 @@ export default function ListaPartidas({ grupo }) {
   return (
     <div className="flex flex-col gap-6">
       {partidas.length === 0 && (
-        <div className="rounded-2xl border-2 border-dashed border-gray-300 px-6 py-10 text-center">
-          <p className="font-semibold">Nenhuma partida marcada</p>
-          <p className="mt-1 text-sm text-gray-500">
-            {organizador
-              ? 'Marque o próximo jogo: a galera confirma presença e a IA monta os times.'
-              : 'Quando o organizador marcar o próximo jogo, ele aparece aqui.'}
-          </p>
-        </div>
+        <Vazio titulo="Nenhuma partida marcada">
+          {organizador
+            ? 'Marque o próximo jogo: a galera confirma presença e a IA monta os times.'
+            : 'Quando o organizador marcar o próximo jogo, ele aparece aqui.'}
+        </Vazio>
       )}
 
       {proximas.length > 0 && (
         <section>
-          <p className="mb-3 text-xs font-semibold tracking-wide text-gray-500 uppercase">Próximas</p>
+          <RotuloSecao className="mb-3">Próximas</RotuloSecao>
           <ul className="flex flex-col gap-3">
             {proximas.map((p, i) => (
               <li key={p.id}>
@@ -82,7 +81,7 @@ export default function ListaPartidas({ grupo }) {
 
       {encerradas.length > 0 && (
         <section>
-          <p className="mb-3 text-xs font-semibold tracking-wide text-gray-500 uppercase">Encerradas</p>
+          <RotuloSecao className="mb-3">Encerradas</RotuloSecao>
           <ul className="flex flex-col gap-2">
             {encerradas.map((p) => (
               <li key={p.id}>

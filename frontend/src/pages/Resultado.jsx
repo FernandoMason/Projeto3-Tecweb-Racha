@@ -7,6 +7,7 @@ import Carregando from '../components/Carregando.jsx'
 import Contador from '../components/Contador.jsx'
 import { Cabecalho } from '../components/Layout.jsx'
 import Placar from '../components/Placar.jsx'
+import RotuloSecao from '../components/RotuloSecao.jsx'
 import { dataHora } from '../components/partida.js'
 
 const CONTRA = 'contra' // gol contra / sem autor
@@ -102,7 +103,7 @@ function Resultado({ id }) {
 
       <div className="flex flex-col gap-6">
         <section className="flex flex-col gap-2">
-          <p className="text-xs font-semibold tracking-wide text-gray-500 uppercase">Placar final</p>
+          <RotuloSecao>Placar final</RotuloSecao>
           <Placar placar={placar} vencedor={vencedor} />
           <p className="text-xs text-gray-500">O placar é a soma dos gols marcados abaixo.</p>
         </section>

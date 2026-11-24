@@ -5,6 +5,8 @@ import Avatar from './Avatar.jsx'
 import Aviso from './Aviso.jsx'
 import Botao from './Botao.jsx'
 import Carregando from './Carregando.jsx'
+import RotuloSecao from './RotuloSecao.jsx'
+import Vazio from './Vazio.jsx'
 
 const plural = (n, um, varios) => `${n} ${n === 1 ? um : varios}`
 
@@ -71,12 +73,9 @@ export default function RankingGrupo({ grupoId }) {
 
   if (ranking.jogos === 0)
     return (
-      <div className="rounded-2xl border-2 border-dashed border-gray-300 px-6 py-10 text-center">
-        <p className="font-semibold">Ranking ainda vazio</p>
-        <p className="mt-1 text-sm text-gray-500">
-          Artilharia, vitórias e craques aparecem depois que o organizador lançar o resultado da primeira partida.
-        </p>
-      </div>
+      <Vazio titulo="Ranking ainda vazio">
+        Artilharia, vitórias e craques aparecem depois que o organizador lançar o resultado da primeira partida.
+      </Vazio>
     )
 
   const config = LISTAS[lista]
@@ -91,9 +90,9 @@ export default function RankingGrupo({ grupoId }) {
         abas={Object.entries(LISTAS).map(([valor, c]) => ({ valor, rotulo: c.rotulo }))}
       />
 
-      <p className="text-xs font-semibold tracking-wide text-gray-500 uppercase">
+      <RotuloSecao>
         {config.rotulo} · {plural(ranking.jogos, 'partida', 'partidas')} com resultado
-      </p>
+      </RotuloSecao>
 
       {itens.length === 0 ? (
         <p className="rounded-2xl bg-gray-100 px-4 py-6 text-center text-sm text-gray-600">{config.vazio}</p>

@@ -10,6 +10,7 @@ import Contador from '../components/Contador.jsx'
 import { Cabecalho } from '../components/Layout.jsx'
 import ListaPartidas from '../components/ListaPartidas.jsx'
 import RankingGrupo from '../components/RankingGrupo.jsx'
+import RotuloSecao from '../components/RotuloSecao.jsx'
 import SeletorPosicao from '../components/SeletorPosicao.jsx'
 import { POSICOES } from '../components/posicoes.js'
 
@@ -30,7 +31,7 @@ function CodigoConvite({ codigo }) {
     <button
       type="button"
       onClick={copiar}
-      className="mt-2 inline-flex w-fit items-center gap-2 rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600 hover:bg-gray-200"
+      className="mt-2 inline-flex h-9 w-fit items-center gap-2 rounded-full bg-gray-100 px-3 text-xs text-gray-600 hover:bg-gray-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-campo-700"
       title="Copiar código"
     >
       convite: <span className="font-mono font-bold text-tinta">{codigo}</span>
@@ -105,7 +106,7 @@ function ListaMembros({ grupoId, souOrganizador }) {
 
   return (
     <>
-      <p className="mb-3 text-xs font-semibold tracking-wide text-gray-500 uppercase">Membros ({membros.length})</p>
+      <RotuloSecao className="mb-3">Membros ({membros.length})</RotuloSecao>
       {souOrganizador && (
         <p className="mb-3 text-xs text-gray-500">
           Toque em um jogador para ajustar a posição e a nota. As notas só aparecem para você.
