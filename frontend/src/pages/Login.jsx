@@ -5,6 +5,8 @@ import { useAuth } from '../auth/AuthContext.jsx'
 import Aviso from '../components/Aviso.jsx'
 import Botao from '../components/Botao.jsx'
 import Campo from '../components/Campo.jsx'
+import { LinkVoltar } from '../components/Layout.jsx'
+import useTitulo from '../components/useTitulo.js'
 
 /** Tela 2 · Login */
 export default function Login() {
@@ -15,6 +17,7 @@ export default function Login() {
   const [senha, setSenha] = useState('')
   const [erro, setErro] = useState('')
   const [enviando, setEnviando] = useState(false)
+  useTitulo('Entrar')
 
   async function enviar(e) {
     e.preventDefault()
@@ -32,9 +35,7 @@ export default function Login() {
 
   return (
     <main className="mx-auto flex min-h-dvh max-w-sm flex-col justify-center px-6 py-10">
-      <Link to="/" className="mb-8 w-fit text-xs font-semibold text-gray-500 hover:text-tinta">
-        ← Voltar
-      </Link>
+      <LinkVoltar para="/" className="mb-6" />
       <h1 className="text-2xl font-extrabold tracking-tight">Bem-vindo de volta</h1>
       <p className="mt-1 text-sm text-gray-500">Entre para ver suas peladas</p>
 

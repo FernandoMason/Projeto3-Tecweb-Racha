@@ -6,6 +6,7 @@ import Aviso from './Aviso.jsx'
 import Botao from './Botao.jsx'
 import Carregando from './Carregando.jsx'
 import SeloIA from './SeloIA.jsx'
+import Vazio from './Vazio.jsx'
 import { falar, parar, pararSeFor, temVoz, useNarrando } from './narrador.js'
 
 /** Mural da partida (#44): narrações publicadas, a mais nova primeiro. Fica na tela pós-jogo. */
@@ -61,12 +62,9 @@ export default function MuralNarracoes({ partidaId }) {
       ) : !narracoes ? (
         <Carregando texto="Carregando o mural..." />
       ) : narracoes.length === 0 ? (
-        <div className="rounded-2xl border-2 border-dashed border-gray-300 px-6 py-8 text-center">
-          <p className="font-semibold">Seja o primeiro a narrar um lance</p>
-          <p className="mt-1 text-sm text-gray-500">
-            Conte uma jogada da partida e a IA narra como no rádio. Dá para ouvir e publicar aqui.
-          </p>
-        </div>
+        <Vazio titulo="Seja o primeiro a narrar um lance" compacto>
+          Conte uma jogada da partida e a IA narra como no rádio. Dá para ouvir e publicar aqui.
+        </Vazio>
       ) : (
         <>
           {!temVoz && <SemVoz />}

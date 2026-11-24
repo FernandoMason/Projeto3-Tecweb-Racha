@@ -9,6 +9,7 @@ import CartaoTime from '../components/CartaoTime.jsx'
 import Etapas from '../components/Etapas.jsx'
 import { Cabecalho } from '../components/Layout.jsx'
 import Placar from '../components/Placar.jsx'
+import RotuloSecao from '../components/RotuloSecao.jsx'
 import SeloIA from '../components/SeloIA.jsx'
 import { dataHora, etapa, hora, jaPassou, tempoAte } from '../components/partida.js'
 
@@ -151,9 +152,9 @@ function Presenca({ partida, acao, onResponder, onMontar }) {
 
       <section>
         <div className="mb-3 flex items-baseline justify-between">
-          <p className="text-xs font-semibold tracking-wide text-gray-500 uppercase">
+          <RotuloSecao>
             Confirmados {partida.confirmados.length}/{partida.vagas}
-          </p>
+          </RotuloSecao>
           <p className="text-xs font-semibold text-campo-700">
             {vagasLivres > 0 ? `+${vagasLivres} ${vagasLivres === 1 ? 'vaga' : 'vagas'}` : 'lotado'}
           </p>
@@ -162,9 +163,9 @@ function Presenca({ partida, acao, onResponder, onMontar }) {
 
         {partida.lista_espera.length > 0 && (
           <>
-            <p className="mt-4 mb-2 text-xs font-semibold tracking-wide text-gray-500 uppercase">
+            <RotuloSecao className="mt-4 mb-2">
               Lista de espera ({partida.lista_espera.length})
-            </p>
+            </RotuloSecao>
             <ListaJogadores jogadores={partida.lista_espera} />
           </>
         )}
@@ -222,7 +223,7 @@ function TimesEPlacar({ partida }) {
     <>
       {resultado && (
         <section className="flex flex-col gap-3">
-          <p className="text-xs font-semibold tracking-wide text-gray-500 uppercase">Placar final</p>
+          <RotuloSecao>Placar final</RotuloSecao>
           <Placar placar={resultado.placar} vencedor={resultado.vencedor} />
           {resultado.gols.length > 0 && (
             <ul className="flex flex-wrap gap-2 text-sm">
@@ -240,9 +241,12 @@ function TimesEPlacar({ partida }) {
       )}
 
       <section className="flex flex-col gap-3">
-        <div className="flex items-baseline justify-between">
-          <p className="text-xs font-semibold tracking-wide text-gray-500 uppercase">Times da rodada</p>
-          <Link to={`/partidas/${partida.id}/times`} className="text-xs font-semibold text-violet-700 hover:underline">
+        <div className="flex items-center justify-between">
+          <RotuloSecao>Times da rodada</RotuloSecao>
+          <Link
+            to={`/partidas/${partida.id}/times`}
+            className="-my-2 -mr-2 inline-flex h-10 items-center rounded-full px-2 text-xs font-semibold text-violet-700 hover:underline focus-visible:outline-2 focus-visible:outline-violet-700"
+          >
             {partida.origem_times === 'ia' && '✦ '}Por que assim?
           </Link>
         </div>
